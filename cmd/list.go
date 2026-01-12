@@ -45,7 +45,7 @@ func runList(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// Scan skills in target directories
+	// Scan skills in target directories (global)
 	var allSkills []LocalSkill
 	for _, t := range targets {
 		skills, err := scanLocalSkills(t)
@@ -55,6 +55,10 @@ func runList(cmd *cobra.Command, args []string) error {
 		}
 		allSkills = append(allSkills, skills...)
 	}
+
+	// Also scan project-local skills if in a git repository
+	projectSkills := scanProjectSkills(targets)
+	allSkills = append(allSkills, projectSkills...)
 
 	if len(allSkills) == 0 {
 		color.Yellow("📭 No installed skills found\n")

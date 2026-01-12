@@ -47,16 +47,20 @@ agentsync install anthropics/skills
 agentsync install anthropics/skills --target gemini
 agentsync install AlfonsSkills/skills -t claude,codex
 
+# Install to project-local directories (.gemini/skills, .claude/skills, .codex/skills)
+agentsync install anthropics/skills --local
+
 # Install from other Git platforms
 agentsync install https://gitlab.com/user/skill-repo.git
 
-# List installed skills
+# List installed skills (global + project-local)
 agentsync list
 agentsync list --target gemini
 
 # Remove skill
 agentsync remove skill-name
 agentsync remove skill-name --target claude
+agentsync remove skill-name --local  # Remove from project directories
 ```
 
 ## Supported Tools

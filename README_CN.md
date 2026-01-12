@@ -47,16 +47,20 @@ agentsync install anthropics/skills
 agentsync install anthropics/skills --target gemini
 agentsync install AlfonsSkills/skills -t claude,codex
 
+# 安装到项目本地目录 (.gemini/skills, .claude/skills, .codex/skills)
+agentsync install anthropics/skills --local
+
 # 从其他 Git 平台安装
 agentsync install https://gitlab.com/user/skill-repo.git
 
-# 列出已安装的技能
+# 列出已安装的技能（全局 + 项目本地）
 agentsync list
 agentsync list --target gemini
 
 # 移除技能
 agentsync remove skill-name
 agentsync remove skill-name --target claude
+agentsync remove skill-name --local  # 从项目目录移除
 ```
 
 ## 支持的工具

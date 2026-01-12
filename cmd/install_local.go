@@ -3,87 +3,52 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/fatih/color"
-	"github.com/spf13/cobra"
 
 	"github.com/AlfonsSkills/AgentSync/internal/git"
+	"github.com/AlfonsSkills/AgentSync/internal/project"
 	"github.com/AlfonsSkills/AgentSync/internal/skill"
-	"github.com/AlfonsSkills/AgentSync/internal/target"
 )
 
-var (
-	localInstall bool
-)
-
-// installCmd install command
-var installCmd = &cobra.Command{
-	Use:   "install <repository>",
-	Short: "Install skills to target tools",
-	Long: `Install skills from a Git repository to local AI coding tool directories.
-
-Repository formats:
-  user/repo              Use GitHub (default)
-  https://github.com/... Full URL
-
-Examples:
-  agentsync install AlfonsSkills/skills
-  agentsync install AlfonsSkills/skills --target gemini
-  agentsync install AlfonsSkills/skills --local  # Install to project .gemini/skills
-  agentsync install https://github.com/AlfonsSkills/skills.git -t claude,codex`,
-	Args: cobra.ExactArgs(1),
-	RunE: runInstall,
-}
-
-func init() {
-	rootCmd.AddCommand(installCmd)
-	installCmd.Flags().BoolVarP(&localInstall, "local", "l", false, "Install to project-local skills directories (.gemini/skills, .claude/skills, .codex/skills)")
-}
-
-func runInstall(cmd *cobra.Command, args []string) error {
-	source := args[0]
-
-	// Handle local installation
-	if localInstall {
-		return runLocalInstall(source)
-	}
-
-	// Parse target tools for global installation
-	targets, err := target.ParseTargets(targetFlags)
+// runLocalInstall handles --local installation to project directories
+func runLocalInstall(source string) error {
+	// Find project root
+	projectRoot, err := project.FindProjectRoot()
 	if err != nil {
+		color.Red("❌ %v\n", err)
+		color.Yellow("💡 The --local flag requires a git repository\n")
 		return err
 	}
 
-	// Create Git fetcher
-	fetcher := git.NewFetcher()
+	color.Cyan("📁 Project root: %s\n", projectRoot)
 
+	// Clone repository
+	fetcher := git.NewFetcher()
 	color.Cyan("📦 Cloning repository...\n")
 	color.White("   Source: %s\n", fetcher.NormalizeURL(source))
 
-	// Clone to temp directory
 	tempDir, err := fetcher.CloneToTemp(source)
 	if err != nil {
 		color.Red("❌ Clone failed: %v\n", err)
 		return err
 	}
-	defer os.RemoveAll(tempDir) // Cleanup temp directory
+	defer os.RemoveAll(tempDir)
 
-	// Scan skills in repository
+	// Scan skills
 	skills, err := skill.ScanSkills(tempDir)
 	if err != nil {
 		color.Red("❌ Scan failed: %v\n", err)
 		return err
 	}
 
-	// Check if any skills found
 	if len(skills) == 0 {
-		// Try to validate root directory as a skill
 		if err := skill.ValidateSkillDir(tempDir); err != nil {
 			color.Red("❌ No valid skills found in repository\n")
 			return fmt.Errorf("no skills found in repository")
 		}
-		// Root directory is a skill
 		repoName := skill.ExtractSkillName(source)
 		skills = []skill.SkillInfo{{
 			Name: repoName,
@@ -91,10 +56,9 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		}}
 	}
 
-	// Select skills to install
+	// Interactive selection
 	color.Green("✓ Found %d skill(s)\n\n", len(skills))
 
-	// Build options list with colored skill names
 	var options []string
 	cyan := color.New(color.FgCyan).SprintFunc()
 	for _, s := range skills {
@@ -105,7 +69,6 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Interactive multi-select
 	var selectedIndices []int
 	prompt := &survey.MultiSelect{
 		Message:  "Select skills to install:",
@@ -126,7 +89,8 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		selectedSkills = append(selectedSkills, skills[idx])
 	}
 
-	// Install selected skills
+	// Install to all three project directories
+	targets := []string{"gemini", "claude", "codex"}
 	copyOpts := skill.DefaultCopyOptions()
 	totalInstalled := 0
 
@@ -134,14 +98,21 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		color.Cyan("\n📦 Installing: %s\n", s.Name)
 		installedCount := 0
 
-		for _, t := range targets {
-			skillsDir, err := t.EnsureSkillsDir()
+		for _, targetName := range targets {
+			// Get project-local skills directory
+			skillsDir, err := project.GetLocalSkillsDir(targetName)
 			if err != nil {
-				color.Yellow("   ⚠ Skipping %s: %v\n", t.DisplayName(), err)
+				color.Yellow("   ⚠ Failed to get %s directory: %v\n", targetName, err)
 				continue
 			}
 
-			destDir := skillsDir + "/" + s.Name
+			// Ensure directory exists
+			if err := os.MkdirAll(skillsDir, 0755); err != nil {
+				color.Yellow("   ⚠ Failed to create %s directory: %v\n", targetName, err)
+				continue
+			}
+
+			destDir := filepath.Join(skillsDir, s.Name)
 
 			// Remove existing if exists
 			if _, err := os.Stat(destDir); !os.IsNotExist(err) {
@@ -149,11 +120,11 @@ func runInstall(cmd *cobra.Command, args []string) error {
 			}
 
 			if err := skill.CopyDir(s.Path, destDir, copyOpts); err != nil {
-				color.Yellow("   ⚠ Copy to %s failed: %v\n", t.DisplayName(), err)
+				color.Yellow("   ⚠ Copy to .%s/skills failed: %v\n", targetName, err)
 				continue
 			}
 
-			color.Green("   ✓ Installed to %s: %s\n", t.DisplayName(), destDir)
+			color.Green("   ✓ Installed to .%s/skills: %s\n", targetName, destDir)
 			installedCount++
 		}
 
@@ -167,6 +138,6 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("installation failed")
 	}
 
-	color.Green("\n✅ Installation complete! %d skill(s) installed\n", totalInstalled)
+	color.Green("\n✅ Installation complete! %d skill(s) installed to project directories\n", totalInstalled)
 	return nil
 }

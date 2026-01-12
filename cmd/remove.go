@@ -12,6 +12,10 @@ import (
 	"github.com/AlfonsSkills/AgentSync/internal/target"
 )
 
+var (
+	localRemove bool
+)
+
 // removeCmd remove command
 var removeCmd = &cobra.Command{
 	Use:   "remove <skill-name>",
@@ -20,19 +24,26 @@ var removeCmd = &cobra.Command{
 
 Examples:
   agentsync remove my-skill
-  agentsync remove my-skill --target gemini`,
+  agentsync remove my-skill --target gemini
+  agentsync remove my-skill --local  # Remove from project directories`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRemove,
 }
 
 func init() {
 	rootCmd.AddCommand(removeCmd)
+	removeCmd.Flags().BoolVarP(&localRemove, "local", "l", false, "Remove from project-local skills directories")
 }
 
 func runRemove(cmd *cobra.Command, args []string) error {
 	skillName := args[0]
 
-	// Parse target tools
+	// Handle local removal
+	if localRemove {
+		return runLocalRemove(skillName)
+	}
+
+	// Parse target tools for global removal
 	targets, err := target.ParseTargets(targetFlags)
 	if err != nil {
 		return err

@@ -32,3 +32,4 @@ debug/
 # Temp
 tmp/
 temp/
+vendor/
