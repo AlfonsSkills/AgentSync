@@ -69,6 +69,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Read changelog
+        id: changelog
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          CHANGELOG_FILE="changelog/${VERSION}.md"
+          
+          if [ -f "$CHANGELOG_FILE" ]; then
+            # Read changelog content, skip the version header line
+            BODY=$(tail -n +3 "$CHANGELOG_FILE")
+            echo "CHANGELOG_FOUND=true" >> $GITHUB_OUTPUT
+            # Use multiline output
+            echo "BODY<<EOF" >> $GITHUB_OUTPUT
+            echo "$BODY" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "CHANGELOG_FOUND=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No changelog found for $VERSION"
+          fi
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -79,6 +102,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
-          generate_release_notes: true
+          body: ${{ steps.changelog.outputs.BODY }}
+          generate_release_notes: ${{ steps.changelog.outputs.CHANGELOG_FOUND == 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
