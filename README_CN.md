@@ -40,12 +40,12 @@ make build
 ## 使用方法
 
 ```bash
-# 安装技能到所有工具
-agentsync install user/repo
+# 从 monorepo 安装技能（交互式选择）
+agentsync install anthropics/skills
 
 # 安装到指定工具
-agentsync install user/repo --target gemini
-agentsync install user/repo -t claude,codex
+agentsync install anthropics/skills --target gemini
+agentsync install AlfonsSkills/skills -t claude,codex
 
 # 从其他 Git 平台安装
 agentsync install https://gitlab.com/user/skill-repo.git

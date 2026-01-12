@@ -40,12 +40,12 @@ make build
 ## Usage
 
 ```bash
-# Install skill to all tools
-agentsync install user/repo
+# Install skills from monorepo (interactive selection)
+agentsync install anthropics/skills
 
 # Install to specific tool
-agentsync install user/repo --target gemini
-agentsync install user/repo -t claude,codex
+agentsync install anthropics/skills --target gemini
+agentsync install AlfonsSkills/skills -t claude,codex
 
 # Install from other Git platforms
 agentsync install https://gitlab.com/user/skill-repo.git
