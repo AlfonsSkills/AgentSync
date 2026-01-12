@@ -1,0 +1,34 @@
+# Binaries
+agentsync
+agentsync.exe
+build/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug
+*.log
+debug/
+
+# Temp
+tmp/
+temp/
