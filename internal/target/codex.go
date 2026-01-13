@@ -17,11 +17,6 @@ func NewCodexProvider() ToolProvider {
 	return &codexProvider{homeDir: homeDir}
 }
 
-// newCodexProviderWithHome 创建指定 home 目录的 Provider（用于测试）
-func newCodexProviderWithHome(homeDir string) ToolProvider {
-	return &codexProvider{homeDir: homeDir}
-}
-
 // Type 返回工具类型枚举
 func (c *codexProvider) Type() ToolType {
 	return ToolCodex

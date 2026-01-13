@@ -16,11 +16,6 @@ func NewClaudeProvider() ToolProvider {
 	return &claudeProvider{homeDir: homeDir}
 }
 
-// newClaudeProviderWithHome 创建指定 home 目录的 Provider（用于测试）
-func newClaudeProviderWithHome(homeDir string) ToolProvider {
-	return &claudeProvider{homeDir: homeDir}
-}
-
 // Type 返回工具类型枚举
 func (c *claudeProvider) Type() ToolType {
 	return ToolClaude

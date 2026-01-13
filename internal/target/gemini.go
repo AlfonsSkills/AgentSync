@@ -16,11 +16,6 @@ func NewGeminiProvider() ToolProvider {
 	return &geminiProvider{homeDir: homeDir}
 }
 
-// newGeminiProviderWithHome 创建指定 home 目录的 Provider（用于测试）
-func newGeminiProviderWithHome(homeDir string) ToolProvider {
-	return &geminiProvider{homeDir: homeDir}
-}
-
 // Type 返回工具类型枚举
 func (g *geminiProvider) Type() ToolType {
 	return ToolGemini
