@@ -5,9 +5,10 @@ package target
 type ToolType string
 
 const (
-	ToolGemini ToolType = "gemini"
-	ToolClaude ToolType = "claude"
-	ToolCodex  ToolType = "codex"
+	ToolGemini      ToolType = "gemini"
+	ToolClaude      ToolType = "claude"
+	ToolCodex       ToolType = "codex"
+	ToolAntigravity ToolType = "antigravity"
 )
 
 // String 返回工具类型的字符串表示

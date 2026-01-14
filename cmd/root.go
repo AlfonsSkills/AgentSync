@@ -62,5 +62,5 @@ Build Time: %s
 
 	// 添加全局 flags
 	rootCmd.PersistentFlags().StringSliceVarP(&targetFlags, "target", "t", []string{},
-		"Target tools (gemini, claude, codex), comma-separated, default: all")
+		"Target tools (gemini, claude, codex, antigravity), comma-separated, default: all")
 }
