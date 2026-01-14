@@ -9,8 +9,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/AlfonsSkills/AgentSync/internal/skill"
-	"github.com/AlfonsSkills/AgentSync/internal/target"
+	"github.com/AlfonsSkills/SkillSync/internal/skill"
+	"github.com/AlfonsSkills/SkillSync/internal/target"
 )
 
 // listCmd list command
@@ -20,8 +20,8 @@ var listCmd = &cobra.Command{
 	Long: `List locally installed skills (scans actual directories).
 
 Examples:
-  agentsync list
-  agentsync list --target gemini`,
+  skillsync list
+  skillsync list --target gemini`,
 	RunE: runList,
 }
 

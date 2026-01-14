@@ -1,6 +1,6 @@
 package main
 
-import "github.com/AlfonsSkills/AgentSync/cmd"
+import "github.com/AlfonsSkills/SkillSync/cmd"
 
 func main() {
 	cmd.Execute()

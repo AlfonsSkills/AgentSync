@@ -22,26 +22,26 @@ var (
 
 // rootCmd 根命令
 var rootCmd = &cobra.Command{
-	Use:   "agentsync",
+	Use:   "skillsync",
 	Short: "Sync skills from Git repositories to local AI coding tools",
-	Long: `AgentSync - Git Skill Sync Tool
+	Long: `SkillSync - Git Skill Sync Tool
 
 Sync skills from Git repositories (default: GitHub) to local AI coding tool directories.
 Supports Gemini CLI, Claude Code, and Codex CLI.
 
 Examples:
   # Install skill to all tools
-  agentsync install user/repo
+  skillsync install user/repo
 
   # Install to specific tool
-  agentsync install user/repo --target gemini
-  agentsync install user/repo -t claude,codex
+  skillsync install user/repo --target gemini
+  skillsync install user/repo -t claude,codex
 
   # List installed skills
-  agentsync list
+  skillsync list
 
   # Remove skill
-  agentsync remove skill-name`,
+  skillsync remove skill-name`,
 	Version: Version,
 }
 
@@ -55,12 +55,12 @@ func Execute() {
 
 func init() {
 	// 设置版本模板
-	rootCmd.SetVersionTemplate(fmt.Sprintf(`AgentSync %s
+	rootCmd.SetVersionTemplate(fmt.Sprintf(`SkillSync %s
 Git Commit: %s
 Build Time: %s
 `, Version, GitCommit, BuildTime))
 
 	// 添加全局 flags
 	rootCmd.PersistentFlags().StringSliceVarP(&targetFlags, "target", "t", []string{},
-		"Target tools (gemini, claude, codex, antigravity), comma-separated, default: all")
+		"Target tools (gemini, claude, codex, opencode, antigravity, copilot, cursor), comma-separated, default: all")
 }

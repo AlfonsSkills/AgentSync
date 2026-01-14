@@ -9,6 +9,9 @@ const (
 	ToolClaude      ToolType = "claude"
 	ToolCodex       ToolType = "codex"
 	ToolAntigravity ToolType = "antigravity"
+	ToolCopilot     ToolType = "copilot"
+	ToolCursor      ToolType = "cursor"
+	ToolOpencode    ToolType = "opencode"
 )
 
 // String 返回工具类型的字符串表示

@@ -1,8 +1,8 @@
-# AgentSync
+# SkillSync
 
-[![CI](https://github.com/AlfonsSkills/AgentSync/actions/workflows/ci.yml/badge.svg)](https://github.com/AlfonsSkills/AgentSync/actions/workflows/ci.yml)
-[![Release](https://github.com/AlfonsSkills/AgentSync/actions/workflows/release.yml/badge.svg)](https://github.com/AlfonsSkills/AgentSync/releases)
-[![Go Report Card](https://goreportcard.com/badge/github.com/AlfonsSkills/AgentSync)](https://goreportcard.com/report/github.com/AlfonsSkills/AgentSync)
+[![CI](https://github.com/AlfonsSkills/SkillSync/actions/workflows/ci.yml/badge.svg)](https://github.com/AlfonsSkills/SkillSync/actions/workflows/ci.yml)
+[![Release](https://github.com/AlfonsSkills/SkillSync/actions/workflows/release.yml/badge.svg)](https://github.com/AlfonsSkills/SkillSync/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/AlfonsSkills/SkillSync)](https://goreportcard.com/report/github.com/AlfonsSkills/SkillSync)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [中文文档](README_CN.md)
@@ -21,46 +21,46 @@ Sync skills from Git repositories to local AI coding tools (Gemini CLI / Claude 
 ### Quick Install (Recommended)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/AgentSync/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/SkillSync/main/install.sh | bash
 ```
 
 ### From Release
 
-Download the latest binary from [Releases](https://github.com/AlfonsSkills/AgentSync/releases).
+Download the latest binary from [Releases](https://github.com/AlfonsSkills/SkillSync/releases).
 
 ### From Source
 
 ```bash
-git clone https://github.com/AlfonsSkills/AgentSync.git
-cd AgentSync
+git clone https://github.com/AlfonsSkills/SkillSync.git
+cd SkillSync
 make build
-# Binary will be at ./build/agentsync
+# Binary will be at ./build/skillsync
 ```
 
 ## Usage
 
 ```bash
 # Install skills from monorepo (interactive selection)
-agentsync install anthropics/skills
+skillsync install anthropics/skills
 
 # Install to specific tool
-agentsync install anthropics/skills --target gemini
-agentsync install AlfonsSkills/skills -t claude,codex
+skillsync install anthropics/skills --target gemini
+skillsync install AlfonsSkills/skills -t claude,codex
 
 # Install to project-local directories (.gemini/skills, .claude/skills, .codex/skills)
-agentsync install anthropics/skills --local
+skillsync install anthropics/skills --local
 
 # Install from other Git platforms
-agentsync install https://gitlab.com/user/skill-repo.git
+skillsync install https://gitlab.com/user/skill-repo.git
 
 # List installed skills (global + project-local)
-agentsync list
-agentsync list --target gemini
+skillsync list
+skillsync list --target gemini
 
 # Remove skill
-agentsync remove skill-name
-agentsync remove skill-name --target claude
-agentsync remove skill-name --local  # Remove from project directories
+skillsync remove skill-name
+skillsync remove skill-name --target claude
+skillsync remove skill-name --local  # Remove from project directories
 ```
 
 ## Supported Tools
@@ -71,6 +71,9 @@ agentsync remove skill-name --local  # Remove from project directories
 | Claude Code | `~/.claude/skills/` | `-t claude` |
 | Codex CLI | `~/.codex/skills/public/` | `-t codex` |
 | Antigravity IDE | `~/.gemini/antigravity/skills/` | `-t antigravity` |
+| Copilot / VSCode | `~/.copilot/skills/` | `-t copilot` |
+| Cursor | `~/.cursor/skills/` | `-t cursor` |
+| OpenCode | `~/.config/opencode/skill/` | `-t opencode` |
 
 ## Skill Repository Requirements
 

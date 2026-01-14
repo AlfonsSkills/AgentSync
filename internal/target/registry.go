@@ -19,13 +19,22 @@ func initProviders() {
 			ToolClaude:      NewClaudeProvider(),
 			ToolCodex:       NewCodexProvider(),
 			ToolAntigravity: NewAntigravityProvider(),
+			ToolCopilot:     NewCopilotProvider(),
+			ToolCursor:      NewCursorProvider(),
+			ToolOpencode:    NewOpencodeProvider(),
 		}
 	})
 }
 
 // AllToolTypes 返回所有支持的工具类型（有序）
+// 终端工具优先，IDE 工具在后
 func AllToolTypes() []ToolType {
-	return []ToolType{ToolGemini, ToolClaude, ToolCodex, ToolAntigravity}
+	return []ToolType{
+		// 终端工具
+		ToolGemini, ToolClaude, ToolCodex, ToolOpencode,
+		// IDE 工具
+		ToolAntigravity, ToolCopilot, ToolCursor,
+	}
 }
 
 // AllProviders 返回所有已注册的 Provider 列表
@@ -47,7 +56,7 @@ func GetProvider(toolType ToolType) (ToolProvider, error) {
 	if p, ok := providers[toolType]; ok {
 		return p, nil
 	}
-	return nil, fmt.Errorf("unknown provider: %s, valid providers are: gemini, claude, codex, antigravity", toolType)
+	return nil, fmt.Errorf("unknown provider: %s, valid providers are: gemini, claude, codex, opencode, antigravity, copilot, cursor", toolType)
 }
 
 // GetProviderByName 根据名称字符串获取对应的 Provider

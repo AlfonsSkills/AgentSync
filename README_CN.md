@@ -1,8 +1,8 @@
-# AgentSync
+# SkillSync
 
-[![CI](https://github.com/AlfonsSkills/AgentSync/actions/workflows/ci.yml/badge.svg)](https://github.com/AlfonsSkills/AgentSync/actions/workflows/ci.yml)
-[![Release](https://github.com/AlfonsSkills/AgentSync/actions/workflows/release.yml/badge.svg)](https://github.com/AlfonsSkills/AgentSync/releases)
-[![Go Report Card](https://goreportcard.com/badge/github.com/AlfonsSkills/AgentSync)](https://goreportcard.com/report/github.com/AlfonsSkills/AgentSync)
+[![CI](https://github.com/AlfonsSkills/SkillSync/actions/workflows/ci.yml/badge.svg)](https://github.com/AlfonsSkills/SkillSync/actions/workflows/ci.yml)
+[![Release](https://github.com/AlfonsSkills/SkillSync/actions/workflows/release.yml/badge.svg)](https://github.com/AlfonsSkills/SkillSync/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/AlfonsSkills/SkillSync)](https://goreportcard.com/report/github.com/AlfonsSkills/SkillSync)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [English](README.md)
@@ -21,46 +21,46 @@
 ### 一键安装（推荐）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/AgentSync/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/SkillSync/main/install.sh | bash
 ```
 
 ### 从 Release 下载
 
-从 [Releases](https://github.com/AlfonsSkills/AgentSync/releases) 下载最新版本。
+从 [Releases](https://github.com/AlfonsSkills/SkillSync/releases) 下载最新版本。
 
 ### 从源码构建
 
 ```bash
-git clone https://github.com/AlfonsSkills/AgentSync.git
-cd AgentSync
+git clone https://github.com/AlfonsSkills/SkillSync.git
+cd SkillSync
 make build
-# 二进制文件位于 ./build/agentsync
+# 二进制文件位于 ./build/skillsync
 ```
 
 ## 使用方法
 
 ```bash
 # 从 monorepo 安装技能（交互式选择）
-agentsync install anthropics/skills
+skillsync install anthropics/skills
 
 # 安装到指定工具
-agentsync install anthropics/skills --target gemini
-agentsync install AlfonsSkills/skills -t claude,codex
+skillsync install anthropics/skills --target gemini
+skillsync install AlfonsSkills/skills -t claude,codex
 
 # 安装到项目本地目录 (.gemini/skills, .claude/skills, .codex/skills)
-agentsync install anthropics/skills --local
+skillsync install anthropics/skills --local
 
 # 从其他 Git 平台安装
-agentsync install https://gitlab.com/user/skill-repo.git
+skillsync install https://gitlab.com/user/skill-repo.git
 
 # 列出已安装的技能（全局 + 项目本地）
-agentsync list
-agentsync list --target gemini
+skillsync list
+skillsync list --target gemini
 
 # 移除技能
-agentsync remove skill-name
-agentsync remove skill-name --target claude
-agentsync remove skill-name --local  # 从项目目录移除
+skillsync remove skill-name
+skillsync remove skill-name --target claude
+skillsync remove skill-name --local  # 从项目目录移除
 ```
 
 ## 支持的工具

@@ -21,9 +21,9 @@ var removeCmd = &cobra.Command{
 	Long: `Remove an installed skill.
 
 Examples:
-  agentsync remove my-skill
-  agentsync remove my-skill --target gemini
-  agentsync remove my-skill --local`,
+  skillsync remove my-skill
+  skillsync remove my-skill --target gemini
+  skillsync remove my-skill --local`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRemove,
 }
@@ -38,14 +38,14 @@ func runRemove(cmd *cobra.Command, args []string) error {
 
 	color.Cyan("🗑️  Preparing to remove: %s\n\n", skillName)
 
-	// Step 1: Resolve target providers (interactive if not specified)
-	providers, _, err := resolveTargetProviders(targetFlags)
+	// Step 1: Resolve target providers (仅显示存在该 skill 的工具)
+	providers, _, err := resolveTargetProvidersForRemove(skillName, targetFlags)
 	if err != nil {
 		return err
 	}
 
-	// Step 2: Resolve remove scope (global/local)
-	removeGlobal, removeLocal, projectRoot, err := resolveRemoveScope(localRemove)
+	// Step 2: Resolve remove scope (仅当项目目录存在 skill 时才提示)
+	removeGlobal, removeLocal, projectRoot, err := resolveRemoveScopeWithCheck(skillName, providers, localRemove)
 	if err != nil {
 		return err
 	}

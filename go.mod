@@ -1,4 +1,4 @@
-module github.com/AlfonsSkills/AgentSync
+module github.com/AlfonsSkills/SkillSync
 
 go 1.23.0
 

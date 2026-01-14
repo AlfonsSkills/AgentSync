@@ -1,12 +1,12 @@
 #!/bin/bash
-# AgentSync Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/AgentSync/main/install.sh | bash
+# SkillSync Installer
+# Usage: curl -fsSL https://raw.githubusercontent.com/AlfonsSkills/SkillSync/main/install.sh | bash
 
 set -e
 
-REPO="AlfonsSkills/AgentSync"
+REPO="AlfonsSkills/SkillSync"
 INSTALL_DIR="/usr/local/bin"
-BINARY_NAME="agentsync"
+BINARY_NAME="skillsync"
 
 # Colors
 RED='\033[0;31m'
@@ -88,7 +88,7 @@ verify() {
 
 main() {
     echo ""
-    echo "🚀 AgentSync Installer"
+    echo "🚀 SkillSync Installer"
     echo ""
 
     detect_platform
@@ -99,7 +99,7 @@ main() {
     verify
 
     echo ""
-    info "Run 'agentsync --help' to get started"
+    info "Run 'skillsync --help' to get started"
 }
 
 main

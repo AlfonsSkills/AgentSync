@@ -9,8 +9,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/AlfonsSkills/AgentSync/internal/git"
-	"github.com/AlfonsSkills/AgentSync/internal/skill"
+	"github.com/AlfonsSkills/SkillSync/internal/git"
+	"github.com/AlfonsSkills/SkillSync/internal/skill"
 )
 
 var (
@@ -28,10 +28,10 @@ Repository formats:
   https://github.com/... Full URL
 
 Examples:
-  agentsync install AlfonsSkills/skills
-  agentsync install AlfonsSkills/skills --target gemini
-  agentsync install AlfonsSkills/skills --local
-  agentsync install https://github.com/AlfonsSkills/skills.git -t claude,codex`,
+  skillsync install AlfonsSkills/skills
+  skillsync install AlfonsSkills/skills --target gemini
+  skillsync install AlfonsSkills/skills --local
+  skillsync install https://github.com/AlfonsSkills/skills.git -t claude,codex`,
 	Args: cobra.ExactArgs(1),
 	RunE: runInstall,
 }

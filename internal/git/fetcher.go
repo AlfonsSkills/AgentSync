@@ -67,7 +67,7 @@ func (f *Fetcher) Clone(source, destDir string) error {
 // CloneToTemp 克隆仓库到临时目录，返回临时目录路径
 func (f *Fetcher) CloneToTemp(source string) (string, error) {
 	// 创建临时目录
-	tempDir, err := os.MkdirTemp("", "agentsync-*")
+	tempDir, err := os.MkdirTemp("", "skillsync-*")
 	if err != nil {
 		return "", fmt.Errorf("failed to create temp directory: %w", err)
 	}

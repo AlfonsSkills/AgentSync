@@ -1,7 +1,7 @@
-# AgentSync Makefile
+# SkillSync Makefile
 
 # 变量
-BINARY_NAME := agentsync
+BINARY_NAME := skillsync
 VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 BUILD_DIR := build
 GO := go
@@ -12,9 +12,9 @@ BUILD_TIME := $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 
 # 编译标志
 LDFLAGS := -ldflags "-s -w \
-	-X github.com/AlfonsSkills/AgentSync/cmd.Version=$(VERSION) \
-	-X github.com/AlfonsSkills/AgentSync/cmd.GitCommit=$(GIT_COMMIT) \
-	-X github.com/AlfonsSkills/AgentSync/cmd.BuildTime=$(BUILD_TIME)"
+	-X github.com/AlfonsSkills/SkillSync/cmd.Version=$(VERSION) \
+	-X github.com/AlfonsSkills/SkillSync/cmd.GitCommit=$(GIT_COMMIT) \
+	-X github.com/AlfonsSkills/SkillSync/cmd.BuildTime=$(BUILD_TIME)"
 
 # 目标平台
 PLATFORMS := darwin/amd64 darwin/arm64 linux/amd64 linux/arm64 windows/amd64
@@ -64,7 +64,7 @@ run: build
 
 # 帮助信息
 help:
-	@echo "AgentSync Makefile"
+	@echo "SkillSync Makefile"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make build  - Build for current platform (output: build/)"
