@@ -57,6 +57,27 @@ skillsync install https://gitlab.com/user/skill-repo.git
 skillsync list
 skillsync list --target gemini
 
+# 输出示例：
+#   📦 Installed Skills:
+#
+#     Gemini CLI (1):
+#     📁 ~/.gemini/skills
+#       ✓ devops
+#
+#     Claude Code (2):
+#     📁 ~/.claude/skills
+#       ✓ devops
+#       [project:MyProject]
+#         ✓ docx
+#
+#     Codex CLI (5):
+#     📁 ~/.codex/skills
+#       ✓ gh-address-comments
+#       [public]
+#         ✓ devops
+#       [.system]
+#         ✓ skill-creator
+
 # 移除技能
 skillsync remove skill-name
 skillsync remove skill-name --target claude
@@ -70,7 +91,10 @@ skillsync remove skill-name --local  # 从项目目录移除
 | Gemini CLI | `~/.gemini/skills/` | `-t gemini` |
 | Claude Code | `~/.claude/skills/` | `-t claude` |
 | Codex CLI | `~/.codex/skills/public/` | `-t codex` |
+| OpenCode | `~/.config/opencode/skill/` | `-t opencode` |
 | Antigravity IDE | `~/.gemini/antigravity/skills/` | `-t antigravity` |
+| Copilot / VSCode | `~/.copilot/skills/` | `-t copilot` |
+| Cursor | `~/.cursor/skills/` | `-t cursor` |
 
 ## Skill 仓库要求
 

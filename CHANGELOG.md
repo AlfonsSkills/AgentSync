@@ -6,6 +6,7 @@ Each version has its own file named `vX.X.X.md`.
 
 ## Versions
 
+- [v0.6.0](changelog/v0.6.0.md) - Smart remove command, tool ordering, project rename to SkillSync
 - [v0.5.0](changelog/v0.5.0.md) - Antigravity IDE support
 - [v0.4.0](changelog/v0.4.0.md) - Interactive parameter selection and ToolProvider interface
 - [v0.3.0](changelog/v0.3.0.md) - Project-local skill support
