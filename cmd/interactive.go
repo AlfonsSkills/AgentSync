@@ -84,14 +84,14 @@ func resolveLocalInstall(localFlag bool) (bool, bool, string, error) {
 		}
 		// 仅安装到项目目录
 		color.Cyan("📁 Install scope: Project only\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return false, true, projectRoot, nil
 	}
 
 	// 如果不在项目中，只能安装到全局
 	if !inProject {
 		color.Cyan("📁 Install scope: Global only\n")
-		color.HiBlack("   (Not in a git repository)\n\n")
+		color.HiCyan("   (Not in a git repository)\n\n")
 		return true, false, "", nil
 	}
 
@@ -107,7 +107,7 @@ func resolveLocalInstall(localFlag bool) (bool, bool, string, error) {
 
 	if alsoLocal {
 		color.Cyan("📁 Install scope: Global + Project\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return true, true, projectRoot, nil
 	}
 
@@ -175,13 +175,13 @@ func resolveRemoveScope(localFlag bool) (bool, bool, string, error) {
 			return false, false, "", fmt.Errorf("not in a git repository, --local requires a project context")
 		}
 		color.Cyan("📁 Remove scope: Project only\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return false, true, projectRoot, nil
 	}
 
 	if !inProject {
 		color.Cyan("📁 Remove scope: Global only\n")
-		color.HiBlack("   (Not in a git repository)\n\n")
+		color.HiCyan("   (Not in a git repository)\n\n")
 		return true, false, "", nil
 	}
 
@@ -197,7 +197,7 @@ func resolveRemoveScope(localFlag bool) (bool, bool, string, error) {
 
 	if alsoLocal {
 		color.Cyan("📁 Remove scope: Global + Project\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return true, true, projectRoot, nil
 	}
 
@@ -309,13 +309,13 @@ func resolveRemoveScopeWithCheck(skillName string, providers []target.ToolProvid
 			return false, false, "", fmt.Errorf("skill '%s' not found in project directory", skillName)
 		}
 		color.Cyan("📁 Remove scope: Project only\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return false, true, projectRoot, nil
 	}
 
 	if !inProject {
 		color.Cyan("📁 Remove scope: Global only\n")
-		color.HiBlack("   (Not in a git repository)\n\n")
+		color.HiCyan("   (Not in a git repository)\n\n")
 		return true, false, "", nil
 	}
 
@@ -324,7 +324,7 @@ func resolveRemoveScopeWithCheck(skillName string, providers []target.ToolProvid
 	if !existsInProject {
 		// 项目目录中不存在，直接返回仅全局删除
 		color.Cyan("📁 Remove scope: Global only\n")
-		color.HiBlack("   (Skill not found in project directory)\n\n")
+		color.HiCyan("   (Skill not found in project directory)\n\n")
 		return true, false, "", nil
 	}
 
@@ -340,7 +340,7 @@ func resolveRemoveScopeWithCheck(skillName string, providers []target.ToolProvid
 
 	if alsoLocal {
 		color.Cyan("📁 Remove scope: Global + Project\n")
-		color.HiBlack("   Project root: %s\n\n", projectRoot)
+		color.HiCyan("   Project root: %s\n\n", projectRoot)
 		return true, true, projectRoot, nil
 	}
 

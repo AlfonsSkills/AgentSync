@@ -83,7 +83,7 @@ func runList(cmd *cobra.Command, args []string) error {
 		color.White("  %s (%d):\n", color.New(color.Bold).Sprint(p.DisplayName()), len(skills))
 
 		skillsDir, _ := p.GlobalSkillsDir()
-		color.HiBlack("  📁 %s\n", skillsDir)
+		color.HiCyan("  📁 %s\n", skillsDir)
 
 		// Group by category
 		byCategory := make(map[string][]LocalSkill)
@@ -102,7 +102,7 @@ func runList(cmd *cobra.Command, args []string) error {
 		categories := p.Categories()
 		for _, cat := range categories {
 			if catSkills, ok := byCategory[cat]; ok {
-				color.HiBlack("    [%s]\n", cat)
+				color.HiYellow("    [%s]\n", cat)
 				for _, s := range catSkills {
 					printSkill(s)
 				}
@@ -125,7 +125,7 @@ func runList(cmd *cobra.Command, args []string) error {
 			if found {
 				continue
 			}
-			color.HiBlack("    [%s]\n", cat)
+			color.HiYellow("    [%s]\n", cat)
 			for _, s := range catSkills {
 				printSkill(s)
 			}
