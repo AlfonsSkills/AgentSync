@@ -3,8 +3,13 @@ skillsync
 skillsync.exe
 build/
 
-# Agent skills (project-specific)
+# Agent skills directories (project-specific)
 .agent/
+.claude/
+.gemini/
+.codex/
+.cursor/
+.copilot/
 
 # Go
 *.exe
