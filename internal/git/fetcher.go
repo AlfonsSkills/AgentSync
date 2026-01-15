@@ -27,6 +27,9 @@ func NewFetcher() *Fetcher {
 //   - https://github.com/user/repo -> https://github.com/user/repo.git
 //   - git@github.com:user/repo.git -> git@github.com:user/repo.git
 func (f *Fetcher) NormalizeURL(source string) string {
+	// 去除末尾的斜杠
+	source = strings.TrimRight(source, "/")
+
 	// 如果已经是完整的 URL，直接返回
 	if strings.HasPrefix(source, "https://") || strings.HasPrefix(source, "git@") {
 		// 确保有 .git 后缀
