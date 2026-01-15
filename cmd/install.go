@@ -198,5 +198,9 @@ func runInstall(cmd *cobra.Command, args []string) error {
 	}
 
 	color.Green("\n✅ Installation complete! %d skill(s) installed\n", totalInstalled)
+
+	// 检查更新（利用已有网络连接）
+	checkUpdateInBackground()
+
 	return nil
 }

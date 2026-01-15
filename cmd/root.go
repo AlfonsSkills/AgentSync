@@ -51,14 +51,6 @@ Examples:
   # Remove skill
   skillsync remove skill-name`,
 	Version: Version,
-	PersistentPostRun: func(cmd *cobra.Command, args []string) {
-		// 跳过 upgrade、help 和 version 命令的更新检查
-		if cmd.Name() == "upgrade" || cmd.Name() == "help" || cmd.Name() == "skillsync" {
-			return
-		}
-		// 检查更新（带超时）
-		checkUpdateInBackground()
-	},
 }
 
 // Execute 执行根命令
