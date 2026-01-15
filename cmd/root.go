@@ -15,6 +15,12 @@ var (
 	BuildTime = "unknown"
 )
 
+// 项目元数据
+const (
+	Author     = "Alfons <alfonsxh@gmail.com>"
+	ProjectURL = "https://github.com/AlfonsSkills/SkillSync"
+)
+
 var (
 	// 全局 flags
 	targetFlags []string
@@ -58,7 +64,10 @@ func init() {
 	rootCmd.SetVersionTemplate(fmt.Sprintf(`SkillSync %s
 Git Commit: %s
 Build Time: %s
-`, Version, GitCommit, BuildTime))
+
+Author:  %s
+Project: %s
+`, Version, GitCommit, BuildTime, Author, ProjectURL))
 
 	// 添加全局 flags
 	rootCmd.PersistentFlags().StringSliceVarP(&targetFlags, "target", "t", []string{},
