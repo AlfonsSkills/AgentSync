@@ -2,7 +2,8 @@
 
 # 变量
 BINARY_NAME := skillsync
-VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
+# 版本号：优先使用精确 tag，否则使用 dev+commit
+VERSION := $(shell git describe --tags --exact-match 2>/dev/null || echo "dev")
 BUILD_DIR := build
 GO := go
 

@@ -4,7 +4,9 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/AlfonsSkills/SkillSync/internal/updater"
 	"github.com/spf13/cobra"
 )
 
@@ -49,6 +51,14 @@ Examples:
   # Remove skill
   skillsync remove skill-name`,
 	Version: Version,
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		// 跳过 upgrade、help 和 version 命令的更新检查
+		if cmd.Name() == "upgrade" || cmd.Name() == "help" || cmd.Name() == "skillsync" {
+			return
+		}
+		// 检查更新（带超时）
+		checkUpdateInBackground()
+	},
 }
 
 // Execute 执行根命令
@@ -72,4 +82,34 @@ Project: %s
 	// 添加全局 flags
 	rootCmd.PersistentFlags().StringSliceVarP(&targetFlags, "target", "t", []string{},
 		"Target tools (gemini, claude, codex, opencode, goose, crush, antigravity, copilot, cursor, cline, droid, kilocode, roocode, vscode), comma-separated, default: all")
+}
+
+// checkUpdateInBackground 检查更新（带超时）
+func checkUpdateInBackground() {
+	// dev 版本不检查更新
+	if Version == "dev" {
+		return
+	}
+
+	// 设置超时，避免阻塞太久
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+
+		result, err := updater.CheckLatestVersion(Version)
+		if err != nil {
+			return // 静默失败，不影响用户体验
+		}
+
+		if !result.IsLatest {
+			fmt.Printf("\n⚠ A new version is available: %s (current: %s)\n", result.LatestVersion, result.CurrentVersion)
+			fmt.Println("  Run: skillsync upgrade")
+		}
+	}()
+
+	// 最多等待 3 秒
+	select {
+	case <-done:
+	case <-time.After(3 * time.Second):
+	}
 }
