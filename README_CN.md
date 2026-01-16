@@ -87,6 +87,12 @@ skillsync install AlfonsSkills/skills -t claude,codex,gemini
 # 从 GitLab 或其他平台安装
 skillsync install https://gitlab.com/user/skill-repo.git
 
+# 从 tree URL 安装单个 Skill（GitHub）
+skillsync install https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/skills/creative-design/canvas-design
+
+# 不带域名时默认 GitHub
+skillsync install davila7/claude-code-templates/tree/main/cli-tool/components/skills/creative-design/canvas-design
+
 # 列出指定工具的技能
 skillsync list --target gemini
 

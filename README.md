@@ -87,6 +87,12 @@ skillsync install AlfonsSkills/skills -t claude,codex,gemini
 # Install from GitLab or other platforms
 skillsync install https://gitlab.com/user/skill-repo.git
 
+# Install a single skill from a tree URL (GitHub)
+skillsync install https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/skills/creative-design/canvas-design
+
+# Install a single skill using GitHub default host (no domain)
+skillsync install davila7/claude-code-templates/tree/main/cli-tool/components/skills/creative-design/canvas-design
+
 # List skills for specific tool
 skillsync list --target gemini
 

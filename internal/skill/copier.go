@@ -166,6 +166,8 @@ func ScanSkills(dir string) ([]SkillInfo, error) {
 }
 
 // extractSkillDescription 从 SKILL.md 提取 description 字段
+// 入参: skillFile SKILL.md 文件路径
+// 返回: description 字段内容，读取失败或不存在则为空
 func extractSkillDescription(skillFile string) string {
 	content, err := os.ReadFile(skillFile)
 	if err != nil {
@@ -181,6 +183,14 @@ func extractSkillDescription(skillFile string) string {
 		}
 	}
 	return ""
+}
+
+// ReadSkillDescription 读取指定 skill 目录中的描述信息
+// 入参: skillDir skill 目录路径
+// 返回: description 字段内容，读取失败或不存在则为空
+func ReadSkillDescription(skillDir string) string {
+	skillFile := filepath.Join(skillDir, "SKILL.md")
+	return extractSkillDescription(skillFile)
 }
 
 // ValidateSkillDir 验证目录是否是有效的 skill 目录
