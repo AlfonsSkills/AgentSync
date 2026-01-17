@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
@@ -39,7 +39,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: "1.21"
 
       - name: Get version
         id: version
@@ -78,7 +78,7 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.VERSION }}
           CHANGELOG_FILE="changelog/${VERSION}.md"
-          
+
           if [ -f "$CHANGELOG_FILE" ]; then
             # Read changelog content, skip the version header line
             BODY=$(tail -n +3 "$CHANGELOG_FILE")
@@ -109,7 +109,6 @@ jobs:
 
       # 自动更新 Homebrew Formula
       - name: Update Homebrew Formula
-        if: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
         env:
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           VERSION: ${{ steps.version.outputs.VERSION }}
@@ -168,4 +167,3 @@ jobs:
           git add Formula/skillsync.rb
           git commit -m "Update skillsync to ${VERSION}"
           git push
-
