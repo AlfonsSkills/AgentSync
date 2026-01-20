@@ -11,7 +11,7 @@ GO := go
 GIT_COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME := $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 
-# 编译标志
+# 编译标志 - 使用 CGO_ENABLED=0 实现静态编译，避免 glibc 依赖
 LDFLAGS := -ldflags "-s -w \
 	-X github.com/AlfonsSkills/SkillSync/cmd.Version=$(VERSION) \
 	-X github.com/AlfonsSkills/SkillSync/cmd.GitCommit=$(GIT_COMMIT) \
@@ -25,11 +25,11 @@ PLATFORMS := darwin/amd64 darwin/arm64 linux/amd64 linux/arm64 windows/amd64
 # 默认目标
 all: build
 
-# 编译当前平台到 build 目录
+# 编译当前平台到 build 目录（静态编译）
 build:
-	@echo "🔨 Building $(BINARY_NAME)..."
+	@echo "🔨 Building $(BINARY_NAME) (static)..."
 	@mkdir -p $(BUILD_DIR)
-	$(GO) build $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME) .
+	CGO_ENABLED=0 $(GO) build $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME) .
 	@echo "✅ Build complete: $(BUILD_DIR)/$(BINARY_NAME)"
 
 # 清理构建产物
@@ -48,12 +48,12 @@ lint:
 	@echo "🔍 Running linter..."
 	golangci-lint run ./...
 
-# 跨平台编译
+# 跨平台编译（静态编译）
 cross:
-	@echo "🌍 Cross-compiling for multiple platforms..."
+	@echo "🌍 Cross-compiling for multiple platforms (static)..."
 	@mkdir -p $(BUILD_DIR)
 	@for platform in $(PLATFORMS); do \
-		GOOS=$${platform%/*} GOARCH=$${platform#*/} \
+		CGO_ENABLED=0 GOOS=$${platform%/*} GOARCH=$${platform#*/} \
 		$(GO) build $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-$${platform%/*}-$${platform#*/}$(if $(findstring windows,$${platform%/*}),.exe,) . ; \
 		echo "  ✓ $(BUILD_DIR)/$(BINARY_NAME)-$${platform%/*}-$${platform#*/}" ; \
 	done
