@@ -31,11 +31,12 @@ func init() {
 
 // LocalSkill represents a locally discovered skill
 type LocalSkill struct {
-	Name     string
-	Path     string
-	Provider target.ToolProvider // 使用 Provider 替代 Target
-	Valid    bool                // Contains SKILL.md
-	Category string              // Category (e.g., public, .system, or empty for root)
+	Name        string
+	Path        string
+	Provider    target.ToolProvider // 使用 Provider 替代 Target
+	Valid       bool                // Contains SKILL.md
+	Category    string              // Category (e.g., public, .system, or empty for root)
+	Description string              // Skill description from SKILL.md frontmatter
 }
 
 func runList(cmd *cobra.Command, args []string) error {
@@ -137,16 +138,33 @@ func runList(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// printSkill prints a single skill
+// printSkill 打印单个 skill 信息
+// 入参: s LocalSkill 结构体
+// 输出格式: "✓ skill-name - description" 或 "⚠ skill-name (missing SKILL.md)"
 func printSkill(s LocalSkill) {
 	prefix := "    "
 	if s.Category != "" {
 		prefix = "      "
 	}
+
+	// 截断过长的描述
+	desc := s.Description
+	if len([]rune(desc)) > 60 {
+		desc = string([]rune(desc)[:57]) + "..."
+	}
+
+	green := color.New(color.FgGreen).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	white := color.New(color.FgWhite).SprintFunc()
+
 	if s.Valid {
-		color.Green("%s✓ %s\n", prefix, s.Name)
+		if desc != "" {
+			fmt.Printf("%s%s%s\n", prefix, green("✓ "+s.Name), white(" - "+desc))
+		} else {
+			fmt.Printf("%s%s\n", prefix, green("✓ "+s.Name))
+		}
 	} else {
-		color.Yellow("%s⚠ %s (missing SKILL.md)\n", prefix, s.Name)
+		fmt.Printf("%s%s\n", prefix, yellow("⚠ "+s.Name+" (missing SKILL.md)"))
 	}
 }
 
@@ -203,11 +221,12 @@ func scanLocalSkillsWithProvider(p target.ToolProvider) ([]LocalSkill, error) {
 			}
 
 			skills = append(skills, LocalSkill{
-				Name:     name,
-				Path:     entryPath,
-				Provider: p,
-				Valid:    valid,
-				Category: "",
+				Name:        name,
+				Path:        entryPath,
+				Provider:    p,
+				Valid:       valid,
+				Category:    "",
+				Description: skill.ReadSkillDescription(entryPath),
 			})
 		}
 	}
@@ -239,11 +258,12 @@ func scanCategoryDirWithProvider(dir, category string, p target.ToolProvider) ([
 		valid := skill.ValidateSkillDir(entryPath) == nil
 
 		skills = append(skills, LocalSkill{
-			Name:     name,
-			Path:     entryPath,
-			Provider: p,
-			Valid:    valid,
-			Category: category,
+			Name:        name,
+			Path:        entryPath,
+			Provider:    p,
+			Valid:       valid,
+			Category:    category,
+			Description: skill.ReadSkillDescription(entryPath),
 		})
 	}
 
@@ -289,11 +309,12 @@ func scanProjectSkillsWithProviders(providers []target.ToolProvider) []LocalSkil
 			valid := skill.ValidateSkillDir(entryPath) == nil
 
 			projectSkills = append(projectSkills, LocalSkill{
-				Name:     name,
-				Path:     entryPath,
-				Provider: p,
-				Valid:    valid,
-				Category: fmt.Sprintf("project:%s", filepath.Base(projectRoot)),
+				Name:        name,
+				Path:        entryPath,
+				Provider:    p,
+				Valid:       valid,
+				Category:    fmt.Sprintf("project:%s", filepath.Base(projectRoot)),
+				Description: skill.ReadSkillDescription(entryPath),
 			})
 		}
 	}
